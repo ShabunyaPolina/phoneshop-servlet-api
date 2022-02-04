@@ -1,5 +1,7 @@
-package com.es.phoneshop.web;
+package com.es.phoneshop.web.servlet;
 
+import com.es.phoneshop.dao.enums.SortField;
+import com.es.phoneshop.dao.enums.SortOrder;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.dao.ProductDao;
 
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.Optional;
 
 
 public class ProductListPageServlet extends HttpServlet {
@@ -17,12 +21,19 @@ public class ProductListPageServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        productDao = new ArrayListProductDao();
+        productDao = ArrayListProductDao.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", productDao.findProducts());
+        String query = request.getParameter("query");
+        SortField sortField = Optional.ofNullable(request.getParameter("sort"))
+                .map(SortField::valueOf)
+                .orElse(null);
+        SortOrder sortOrder = Optional.ofNullable(request.getParameter("order"))
+                .map(SortOrder::valueOf)
+                .orElse(null);
+        request.setAttribute("products", productDao.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }
