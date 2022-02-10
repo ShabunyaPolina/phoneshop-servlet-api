@@ -14,7 +14,7 @@
           ${param.message}
       </p>
   </c:if>
-  <c:if test="${not empty error}">
+  <c:if test="${not empty param.error}">
       <p class="error">
          There was an error adding to cart
       </p>
@@ -49,26 +49,12 @@
       <input name="quantity" style="margin:20px 0 0 0 ;"class="field"
       value="${not empty error ? param.quantity : 1}">
       <button>Add to cart</button>
-      <c:if test="${not empty error}">
+      <c:if test="${not empty param.error}">
           <div class="error">
-              ${error}
+              ${param.error}
           </div>
       </c:if>
   </form>
   <p>Cart: ${cart}</p>
-  <c:if test="${not empty recentlyViewed}">
-      <h2>
-          Recently viewed
-      </h2>
-      <c:forEach var="product" items="${recentlyViewed}">
-          <figure>
-              <img class="product-tile" src="${product.imageUrl}">
-              <a href="${pageContext.servletContext.contextPath}/products/${product.id}">
-                  <div>${product.description}</div>
-              </a>
-              <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
-          </figure>
-      </c:forEach>
-  </c:if>
-  <div class="clear"></div>
+ <tags:recentlyViewed recentlyViewed="${recentlyViewed}"/>
 </tags:master>

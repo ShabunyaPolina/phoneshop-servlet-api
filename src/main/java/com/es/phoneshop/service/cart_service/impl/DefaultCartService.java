@@ -1,11 +1,11 @@
-package com.es.phoneshop.model.cart.cartService.impl;
+package com.es.phoneshop.service.cart_service.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
-import com.es.phoneshop.model.cart.cartService.CartService;
+import com.es.phoneshop.service.cart_service.CartService;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,8 +43,8 @@ public class DefaultCartService implements CartService {
             }
             return cart;
         } finally {
-        locker.readLock().unlock();
-    }
+            locker.readLock().unlock();
+        }
     }
 
     @Override
@@ -72,19 +72,6 @@ public class DefaultCartService implements CartService {
             }
         } finally {
             locker.writeLock().unlock();
-        }
-    }
-
-    @Override
-    public void addToRecentlyViewed(Cart cart, Product product, int numberOfDisplayedProducts) {
-        if (product != null) {
-            cart.getRecentlyViewedProducts().removeIf(item -> product.getId().equals(item.getId()));
-
-            if (cart.getRecentlyViewedProducts().size() == numberOfDisplayedProducts) {
-                cart.getRecentlyViewedProducts().remove(numberOfDisplayedProducts - 1);
-            }
-
-            cart.getRecentlyViewedProducts().add(0, product);
         }
     }
 }

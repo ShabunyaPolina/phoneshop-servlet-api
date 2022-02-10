@@ -1,12 +1,12 @@
 package com.es.phoneshop.web.servlet;
 
-import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.cartService.CartService;
-import com.es.phoneshop.model.cart.cartService.impl.DefaultCartService;
+import com.es.phoneshop.model.recentlyviewed.RecentlyViewedProducts;
 import com.es.phoneshop.model.enums.SortField;
 import com.es.phoneshop.model.enums.SortOrder;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.dao.ProductDao;
+import com.es.phoneshop.service.recently_viewed_service.RecentlyViewedService;
+import com.es.phoneshop.service.recently_viewed_service.impl.DefaultRecentlyViewedService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,21 +19,21 @@ import java.util.Optional;
 
 public class ProductListPageServlet extends HttpServlet {
     private ProductDao productDao;
-    private CartService cartService;
+    private RecentlyViewedService recentlyViewedService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         productDao = ArrayListProductDao.getInstance();
-        cartService = DefaultCartService.getInstance();
+        recentlyViewedService = DefaultRecentlyViewedService.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Cart cart = cartService.getCart(request);
+        RecentlyViewedProducts recentlyViewed = recentlyViewedService.getRecentlyViewed(request);
 
-        cartService.addToRecentlyViewed(cart, cart.getLastViewedProduct(), 3);
-        request.setAttribute("recentlyViewed", cart.getRecentlyViewedProducts());
+        recentlyViewedService.add(recentlyViewed, recentlyViewedService.getLastViewedProduct(recentlyViewed), 3);
+        request.setAttribute("recentlyViewed", recentlyViewed.getRecentlyViewedProducts());
 
         String query = request.getParameter("query");
         SortField sortField = Optional.ofNullable(request.getParameter("sort"))
