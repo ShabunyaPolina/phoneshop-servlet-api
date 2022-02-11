@@ -21,11 +21,33 @@ td {
   border : 1px solid gray;
   vertical-align: top;
 }
-.price {
+.field {
   text-align: right;
 }
 img.product-tile {
   max-width: 64px;
+}
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+figure {
+  width: 85px;
+  height: 130px;
+  padding: 10px;
+  display: inline-block;
+  text-align: center;
+  border : 1px solid gray;
+  margin: 1px;
+  float: left;
+}
+.clear {
+  clear: left;
 }
 
 /* Page specific styles */
