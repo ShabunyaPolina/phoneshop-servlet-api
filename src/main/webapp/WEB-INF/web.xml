@@ -54,4 +54,14 @@
     <url-pattern>/products/price-history/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>cart</servlet-name>
+    <servlet-class>com.es.phoneshop.web.servlet.CartPageServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>cart</servlet-name>
+    <url-pattern>/cart</url-pattern>
+  </servlet-mapping>
+
 </web-app>
