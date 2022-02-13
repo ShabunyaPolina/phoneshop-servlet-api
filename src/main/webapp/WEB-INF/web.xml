@@ -42,6 +42,7 @@
   <error-page>
     <location>/WEB-INF/pages/error.jsp</location>
     <error-code>500</error-code>
+    <error-code>405</error-code>
   </error-page>
 
   <servlet>

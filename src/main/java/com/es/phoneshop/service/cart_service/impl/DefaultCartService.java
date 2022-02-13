@@ -74,4 +74,24 @@ public class DefaultCartService implements CartService {
             locker.writeLock().unlock();
         }
     }
+
+    @Override
+    public void update(Cart cart, Long productId, int quantity) throws OutOfStockException {
+        locker.writeLock().lock();
+        try {
+            Product product = productDao.getProduct(productId);
+
+            Optional<CartItem> cartItem = cart.getItems().stream()
+                    .filter(item -> productId.equals(item.getProduct().getId()))
+                    .findAny();
+
+            if (product.getStock() - quantity < 0) {
+                throw new OutOfStockException(product, quantity, product.getStock());
+            }
+
+            cartItem.ifPresent(item -> item.updateQuantity(quantity));
+        } finally {
+            locker.writeLock().unlock();
+        }
+    }
 }
