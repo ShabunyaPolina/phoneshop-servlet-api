@@ -9,6 +9,7 @@ import com.es.phoneshop.service.cart_service.CartService;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -70,6 +71,9 @@ public class DefaultCartService implements CartService {
             } else {
                 cart.getItems().add(new CartItem(product, quantity));
             }
+
+            recalculateTotalCartQuantity(cart);
+            recalculateTotalCartCoast(cart);
         } finally {
             locker.writeLock().unlock();
         }
@@ -90,6 +94,9 @@ public class DefaultCartService implements CartService {
             }
 
             cartItem.ifPresent(item -> item.updateQuantity(quantity));
+
+            recalculateTotalCartQuantity(cart);
+            recalculateTotalCartCoast(cart);
         } finally {
             locker.writeLock().unlock();
         }
@@ -97,8 +104,30 @@ public class DefaultCartService implements CartService {
 
     @Override
     public void delete(Cart cart, Long productId) {
-        cart.getItems().removeIf(item ->
-                productId.equals(item.getProduct().getId())
+        locker.writeLock().lock();
+        try {
+            cart.getItems().removeIf(item ->
+                    productId.equals(item.getProduct().getId())
+            );
+            recalculateTotalCartQuantity(cart);
+            recalculateTotalCartCoast(cart);
+        } finally {
+            locker.writeLock().unlock();
+        }
+    }
+
+    private void recalculateTotalCartQuantity(Cart cart) {
+        cart.setTotalQuantity(cart.getItems().stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum());
+    }
+
+    private void recalculateTotalCartCoast(Cart cart) {
+        cart.setTotalCoast(cart.getItems().stream()
+                .map(item -> item.getProduct()
+                        .getPrice()
+                        .multiply(new BigDecimal(item.getQuantity())))
+                .reduce(BigDecimal::add).orElse(BigDecimal.ZERO)
         );
     }
 }
