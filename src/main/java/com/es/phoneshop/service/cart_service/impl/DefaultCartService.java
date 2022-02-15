@@ -52,28 +52,30 @@ public class DefaultCartService implements CartService {
     public void add(Cart cart, Long productId, int quantity) throws OutOfStockException {
         locker.writeLock().lock();
         try {
-            Product product = productDao.getProduct(productId);
+            if(quantity != 0) {
+                Product product = productDao.getProduct(productId);
 
-            Optional<CartItem> cartItem = cart.getItems().stream()
-                    .filter(item -> productId.equals(item.getProduct().getId()))
-                    .findAny();
+                Optional<CartItem> cartItem = cart.getItems().stream()
+                        .filter(item -> productId.equals(item.getProduct().getId()))
+                        .findAny();
 
-            int quantityInCart = cartItem.map(CartItem::getQuantity).orElse(0);
+                int quantityInCart = cartItem.map(CartItem::getQuantity).orElse(0);
 
-            int availableStock = product.getStock() - quantityInCart;
+                int availableStock = product.getStock() - quantityInCart;
 
-            if (availableStock - quantity < 0) {
-                throw new OutOfStockException(product, quantity, availableStock);
+                if (availableStock - quantity < 0) {
+                    throw new OutOfStockException(product, quantity, availableStock);
+                }
+
+                if (cartItem.isPresent()) {
+                    cartItem.get().increaseQuantity(quantity);
+                } else {
+                    cart.getItems().add(new CartItem(product, quantity));
+                }
+
+                recalculateTotalCartQuantity(cart);
+                recalculateTotalCartCoast(cart);
             }
-
-            if (cartItem.isPresent()) {
-                cartItem.get().increaseQuantity(quantity);
-            } else {
-                cart.getItems().add(new CartItem(product, quantity));
-            }
-
-            recalculateTotalCartQuantity(cart);
-            recalculateTotalCartCoast(cart);
         } finally {
             locker.writeLock().unlock();
         }
@@ -83,20 +85,22 @@ public class DefaultCartService implements CartService {
     public void update(Cart cart, Long productId, int quantity) throws OutOfStockException {
         locker.writeLock().lock();
         try {
-            Product product = productDao.getProduct(productId);
+            if(quantity != 0) {
+                Product product = productDao.getProduct(productId);
 
-            Optional<CartItem> cartItem = cart.getItems().stream()
-                    .filter(item -> productId.equals(item.getProduct().getId()))
-                    .findAny();
+                Optional<CartItem> cartItem = cart.getItems().stream()
+                        .filter(item -> productId.equals(item.getProduct().getId()))
+                        .findAny();
 
-            if (product.getStock() - quantity < 0) {
-                throw new OutOfStockException(product, quantity, product.getStock());
+                if (product.getStock() - quantity < 0) {
+                    throw new OutOfStockException(product, quantity, product.getStock());
+                }
+
+                cartItem.ifPresent(item -> item.updateQuantity(quantity));
+
+                recalculateTotalCartQuantity(cart);
+                recalculateTotalCartCoast(cart);
             }
-
-            cartItem.ifPresent(item -> item.updateQuantity(quantity));
-
-            recalculateTotalCartQuantity(cart);
-            recalculateTotalCartCoast(cart);
         } finally {
             locker.writeLock().unlock();
         }

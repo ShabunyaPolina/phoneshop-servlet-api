@@ -57,13 +57,19 @@ public class CartPageServlet extends HttpServlet {
             }
 
             Cart cart = cartService.getCart(request);
-            try {
-                cartService.update(cart, productId, quantity);
-            } catch (OutOfStockException e) {
-                String errorMessage = "Out of stock, available " + e.getStockAvailable();
-                errors.put(productId, errorMessage);
+
+            if(quantity == 0) {
+                cartService.delete(cart, productId);
+            } else {
+                try {
+                    cartService.update(cart, productId, quantity);
+                } catch (OutOfStockException e) {
+                    String errorMessage = "Out of stock, available " + e.getStockAvailable();
+                    errors.put(productId, errorMessage);
+                }
             }
         }
+
         if(errors.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/cart?message=Cart updated successfully");
         } else {
