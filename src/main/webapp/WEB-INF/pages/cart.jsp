@@ -79,8 +79,10 @@
                 </td>
             </tr>
         </table>
-        <p>
-            <button>Update</button>
-        </p>
+        <c:if test="${not empty cart.items}">
+            <p>
+                <button>Update</button>
+            </p>
+        </c:if>
     </form>
 </tags:master>

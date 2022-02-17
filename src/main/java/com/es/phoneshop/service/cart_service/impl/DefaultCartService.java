@@ -73,8 +73,7 @@ public class DefaultCartService implements CartService {
                     cart.getItems().add(new CartItem(product, quantity));
                 }
 
-                recalculateTotalCartQuantity(cart);
-                recalculateTotalCartCoast(cart);
+                recalculateCart(cart);
             }
         } finally {
             locker.writeLock().unlock();
@@ -98,8 +97,7 @@ public class DefaultCartService implements CartService {
 
                 cartItem.ifPresent(item -> item.updateQuantity(quantity));
 
-                recalculateTotalCartQuantity(cart);
-                recalculateTotalCartCoast(cart);
+                recalculateCart(cart);
             }
         } finally {
             locker.writeLock().unlock();
@@ -113,8 +111,7 @@ public class DefaultCartService implements CartService {
             cart.getItems().removeIf(item ->
                     productId.equals(item.getProduct().getId())
             );
-            recalculateTotalCartQuantity(cart);
-            recalculateTotalCartCoast(cart);
+            recalculateCart(cart);
         } finally {
             locker.writeLock().unlock();
         }
@@ -133,5 +130,10 @@ public class DefaultCartService implements CartService {
                         .multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal::add).orElse(BigDecimal.ZERO)
         );
+    }
+
+    private void recalculateCart(Cart cart) {
+        recalculateTotalCartQuantity(cart);
+        recalculateTotalCartCoast(cart);
     }
 }

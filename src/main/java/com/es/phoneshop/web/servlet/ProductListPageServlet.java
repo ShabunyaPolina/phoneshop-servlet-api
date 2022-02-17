@@ -78,7 +78,7 @@ public class ProductListPageServlet extends HttpServlet {
                 }
 
                 if(quantity == 0) {
-                    response.sendRedirect(request.getContextPath() + "/products");
+                    response.sendRedirect(request.getContextPath() + "/products?errorId=" + productId + "&error=Quantity is 0");
                     return;
                 }
 
