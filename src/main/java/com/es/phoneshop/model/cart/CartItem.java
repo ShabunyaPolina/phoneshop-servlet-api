@@ -2,7 +2,9 @@ package com.es.phoneshop.model.cart;
 
 import com.es.phoneshop.model.product.Product;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     private final Product product;
     private int quantity;
 
@@ -21,6 +23,10 @@ public class CartItem {
 
     public void increaseQuantity(int addValue) {
         this.quantity += addValue;
+    }
+
+    public void updateQuantity(int newQuantity) {
+        this.quantity = newQuantity;
     }
 
     @Override

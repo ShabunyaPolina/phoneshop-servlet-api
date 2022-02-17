@@ -42,6 +42,7 @@
   <error-page>
     <location>/WEB-INF/pages/error.jsp</location>
     <error-code>500</error-code>
+    <error-code>405</error-code>
   </error-page>
 
   <servlet>
@@ -52,6 +53,36 @@
   <servlet-mapping>
     <servlet-name>productPriceHistory</servlet-name>
     <url-pattern>/products/price-history/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>cart</servlet-name>
+    <servlet-class>com.es.phoneshop.web.servlet.CartPageServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>cart</servlet-name>
+    <url-pattern>/cart</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>deleteCartItem</servlet-name>
+    <servlet-class>com.es.phoneshop.web.servlet.DeleteCartItemServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>deleteCartItem</servlet-name>
+    <url-pattern>/cart/deleteCartItem/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>miniCart</servlet-name>
+    <servlet-class>com.es.phoneshop.web.servlet.MiniCartServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>miniCart</servlet-name>
+    <url-pattern>/cart/miniCart</url-pattern>
   </servlet-mapping>
 
 </web-app>

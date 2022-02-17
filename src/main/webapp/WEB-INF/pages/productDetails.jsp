@@ -47,7 +47,7 @@
           </tr>
       </table>
       <input name="quantity" style="margin:20px 0 0 0 ;"class="field"
-      value="${not empty error ? param.quantity : 1}">
+      value="${not empty param.error ? param.errorQuantity : 1}">
       <button>Add to cart</button>
       <c:if test="${not empty param.error}">
           <div class="error">

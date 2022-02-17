@@ -10,6 +10,16 @@
         <input name="query" value="${param.query}">
         <button>Search</button>
     </form>
+     <c:if test="${not empty param.message}">
+         <p class="success">
+             ${param.message}
+         </p>
+     </c:if>
+     <c:if test="${not empty param.error}">
+         <p class="error">
+            There was an error adding to cart
+         </p>
+     </c:if>
     <table>
         <thead>
             <tr>
@@ -22,15 +32,21 @@
                     </span>
                 </td>
                 <td>
+                    Quantity
+                </td>
+                <td>
                 Price
                     <span class="lowercase">
                         <tags:sortLink sort="PRICE" order="ASC"/>
                         <tags:sortLink sort="PRICE" order="DESC"/>
                     </span>
                 </td>
+                <td>
+                </td>
             </tr>
         </thead>
-        <c:forEach var="product" items="${products}">
+         <form method="post">
+        <c:forEach var="product" items="${products}" varStatus="status">
             <tr>
                 <td>
                     <img class="product-tile" src="${product.imageUrl}">
@@ -40,13 +56,31 @@
                         ${product.description}
                     </a>
                 </td>
+
+                <td>
+                <input name="quantity" value="0" class="field" style="width:50px"/>
+                <input type="hidden" name="productId" value="${product.id}" />
+                <c:set var="id" value="${product.id}"/>
+                <c:if test="${param.errorId eq id}">
+                    <div class="error">
+                        ${param.error}
+                    </div>
+                </c:if>
+                </td>
                 <td class="field">
                     <a href="${pageContext.servletContext.contextPath}/products/price-history/${product.id}">
                         <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
                     </a>
                 </td>
+                <td>
+                    <button formaction="${pageContext.servletContext.contextPath}/products?id=${product.id}">
+                        Add to cart
+                    </button>
+                </td>
+
             </tr>
         </c:forEach>
+        </form>
     </table>
     <tags:recentlyViewed recentlyViewed="${recentlyViewed}"/>
 </tags:master>
