@@ -53,6 +53,11 @@ figure {
   font: 400 30px/1.3 'Lobster Two', Helvetica, sans-serif;
 }
 
+.list {
+    border-collapse: collapse;
+    border : 1px solid white;
+}
+
 /* Page specific styles */
 body.product-list {
 

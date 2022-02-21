@@ -2,8 +2,8 @@ package com.es.phoneshop.web.servlet;
 
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.service.cart_service.CartService;
-import com.es.phoneshop.service.cart_service.impl.DefaultCartService;
+import com.es.phoneshop.service.cart_service.impl.CartService;
+import com.es.phoneshop.service.cart_service.DefaultCartService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -74,7 +74,7 @@ public class CartPageServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/cart?message=Cart updated successfully");
         } else {
             request.setAttribute("errors", errors);
-            doGet(request, response);
+            request.getRequestDispatcher("/WEB-INF/pages/cart.jsp").forward(request, response);
         }
     }
 }
