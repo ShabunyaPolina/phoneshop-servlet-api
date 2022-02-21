@@ -11,6 +11,7 @@ import com.es.phoneshop.service.order_service.OrderService;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -59,6 +60,7 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public void placeOrder(Order order) {
+        order.setSecureId(UUID.randomUUID().toString());
         orderDao.save(order);
     }
 

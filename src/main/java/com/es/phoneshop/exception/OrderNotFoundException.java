@@ -1,11 +1,15 @@
 package com.es.phoneshop.exception;
 
 public class OrderNotFoundException extends RuntimeException{
-    private final Long orderId;
+    private Long orderId;
 
     public OrderNotFoundException(Long id) {
         super();
         this.orderId = id;
+    }
+
+    public OrderNotFoundException(String message) {
+        super(message);
     }
 
     public OrderNotFoundException(String message, Long id) {

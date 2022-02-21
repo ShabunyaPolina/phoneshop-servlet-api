@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.cart_service.impl;
+package com.es.phoneshop.service.cart_service;
 
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
@@ -10,4 +10,5 @@ public interface CartService {
     void add(Cart cart, Long productId, int quantity) throws OutOfStockException;
     void update(Cart cart, Long productId, int quantity) throws OutOfStockException;
     void delete(Cart cart, Long productId);
+    void clear(Cart cart);
 }

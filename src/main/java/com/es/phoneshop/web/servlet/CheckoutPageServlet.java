@@ -3,8 +3,8 @@ package com.es.phoneshop.web.servlet;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.enums.PaymentMethod;
 import com.es.phoneshop.model.order.Order;
-import com.es.phoneshop.service.cart_service.impl.CartService;
-import com.es.phoneshop.service.cart_service.DefaultCartService;
+import com.es.phoneshop.service.cart_service.CartService;
+import com.es.phoneshop.service.cart_service.impl.DefaultCartService;
 import com.es.phoneshop.service.order_service.OrderService;
 import com.es.phoneshop.service.order_service.impl.DefaultOrderService;
 
@@ -48,6 +48,7 @@ public class CheckoutPageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Cart cart = cartService.getCart(request);
         Order order = (Order) request.getSession().getAttribute("order");
 
         Map<String, String> errors = new HashMap<>();
@@ -64,7 +65,8 @@ public class CheckoutPageServlet extends HttpServlet {
 
         if (errors.isEmpty()) {
             orderService.placeOrder(order);
-            response.sendRedirect(request.getContextPath() + "/overview/" + order.getId());
+            cartService.clear(cart);
+            response.sendRedirect(request.getContextPath() + "/order/overview/" + order.getSecureId());
         } else {
             request.setAttribute("errors", errors);
             request.setAttribute("order", order);

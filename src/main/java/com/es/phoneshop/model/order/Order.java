@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Order extends Cart {
+    private String secureId;
+
     private BigDecimal subtotal;
     private BigDecimal deliveryCoast;
 
@@ -18,6 +20,14 @@ public class Order extends Cart {
     private String deliveryAddress;
 
     private PaymentMethod paymentMethod;
+
+    public String getSecureId() {
+        return secureId;
+    }
+
+    public void setSecureId(String secureId) {
+        this.secureId = secureId;
+    }
 
     public BigDecimal getSubtotal() {
         return subtotal;

@@ -30,6 +30,22 @@ public class ArrayListOrderDao extends GenericArrayListDao<Order> implements Ord
     }
 
     @Override
+    public Order getBySecureId(String secureId) throws OrderNotFoundException {
+        getLocker().readLock().lock();
+        try {
+            if (secureId == null) {
+                throw new IllegalArgumentException("Null id");
+            }
+            return getItems().stream()
+                    .filter(item -> secureId.equals(item.getSecureId()))
+                    .findAny()
+                    .orElseThrow(() -> new OrderNotFoundException("No order with secure id " + secureId));
+        } finally {
+            getLocker().readLock().unlock();
+        }
+    }
+
+    @Override
     public void save(Order order) throws OrderNotFoundException {
         super.save(order);
     }

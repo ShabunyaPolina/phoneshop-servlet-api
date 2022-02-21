@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.cart_service;
+package com.es.phoneshop.service.cart_service.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
@@ -6,7 +6,7 @@ import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.cart_service.impl.CartService;
+import com.es.phoneshop.service.cart_service.CartService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -52,7 +52,7 @@ public class DefaultCartService implements CartService {
     public void add(Cart cart, Long productId, int quantity) throws OutOfStockException {
         locker.writeLock().lock();
         try {
-            if(quantity != 0) {
+            if (quantity != 0) {
                 Product product = productDao.get(productId);
 
                 Optional<CartItem> cartItem = cart.getItems().stream()
@@ -84,7 +84,7 @@ public class DefaultCartService implements CartService {
     public void update(Cart cart, Long productId, int quantity) throws OutOfStockException {
         locker.writeLock().lock();
         try {
-            if(quantity != 0) {
+            if (quantity != 0) {
                 Product product = productDao.get(productId);
 
                 Optional<CartItem> cartItem = cart.getItems().stream()
@@ -111,6 +111,17 @@ public class DefaultCartService implements CartService {
             cart.getItems().removeIf(item ->
                     productId.equals(item.getProduct().getId())
             );
+            recalculateCart(cart);
+        } finally {
+            locker.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public void clear(Cart cart) {
+        locker.writeLock().lock();
+        try {
+            cart.getItems().clear();
             recalculateCart(cart);
         } finally {
             locker.writeLock().unlock();
