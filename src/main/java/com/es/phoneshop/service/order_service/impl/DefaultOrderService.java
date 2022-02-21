@@ -8,7 +8,6 @@ import com.es.phoneshop.model.enums.PaymentMethod;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.service.order_service.OrderService;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public class DefaultOrderService implements OrderService {
-    private OrderDao orderDao;
+    private final OrderDao orderDao;
 
     private final ReadWriteLock locker;
 

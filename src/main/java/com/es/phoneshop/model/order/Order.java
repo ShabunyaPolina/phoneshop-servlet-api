@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Order extends Cart {
-    private Long id;
-
     private BigDecimal subtotal;
     private BigDecimal deliveryCoast;
 
@@ -20,14 +18,6 @@ public class Order extends Cart {
     private String deliveryAddress;
 
     private PaymentMethod paymentMethod;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public BigDecimal getSubtotal() {
         return subtotal;

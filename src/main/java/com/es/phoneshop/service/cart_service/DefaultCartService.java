@@ -53,7 +53,7 @@ public class DefaultCartService implements CartService {
         locker.writeLock().lock();
         try {
             if(quantity != 0) {
-                Product product = productDao.getProduct(productId);
+                Product product = productDao.get(productId);
 
                 Optional<CartItem> cartItem = cart.getItems().stream()
                         .filter(item -> productId.equals(item.getProduct().getId()))
@@ -85,7 +85,7 @@ public class DefaultCartService implements CartService {
         locker.writeLock().lock();
         try {
             if(quantity != 0) {
-                Product product = productDao.getProduct(productId);
+                Product product = productDao.get(productId);
 
                 Optional<CartItem> cartItem = cart.getItems().stream()
                         .filter(item -> productId.equals(item.getProduct().getId()))

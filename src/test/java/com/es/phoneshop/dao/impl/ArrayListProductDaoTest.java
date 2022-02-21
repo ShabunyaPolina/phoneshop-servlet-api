@@ -45,19 +45,19 @@ public class ArrayListProductDaoTest {
 
     @Test(expected = ProductNotFoundException.class)
     public void testGetProductNullId() {
-        productDao.getProduct(null);
+        productDao.get(null);
     }
 
     @Test
     public void testGetExistingProduct() {
         Long testId = 1L;
-        Product receivedProduct = productDao.getProduct(testId);
+        Product receivedProduct = productDao.get(testId);
         assertEquals(testId, receivedProduct.getId());
     }
 
     @Test(expected = ProductNotFoundException.class)
     public void testGetNonExistingProduct() {
-        productDao.getProduct(666L);
+        productDao.get(666L);
     }
 
     // saveProduct method tests
@@ -86,7 +86,7 @@ public class ArrayListProductDaoTest {
 
         productDao.save(product);
 
-        Product receivedProduct = productDao.getProduct(testId);
+        Product receivedProduct = productDao.get(testId);
 
         assertEquals(product, receivedProduct);
     }
