@@ -111,4 +111,14 @@
     <exception-type>com.es.phoneshop.exception.OrderNotFoundException</exception-type>
   </error-page>
 
+  <filter>
+    <filter-name>dosFilter</filter-name>
+    <filter-class>com.es.phoneshop.web.filter.DosFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>dosFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 </web-app>
