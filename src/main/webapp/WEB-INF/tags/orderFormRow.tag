@@ -4,6 +4,8 @@
 <%@ attribute name="label" required="true" %>
 <%@ attribute name="order" required="true" type="com.es.phoneshop.model.order.Order"%>
 <%@ attribute name="errors" required="true" type="java.util.Map" %>
+<%@ attribute name="format" required="true" %>
+<%@ attribute name="message" required="true" %>
 
 <tr>
     <td class="list">
@@ -11,7 +13,8 @@
     </td>
     <td class="list">
         <c:set var="error" value="${errors[name]}"/>
-        <input name="${name}"
+        <input name="${name}" pattern=${format} oninvalid="setCustomValidity('${message}')"
+        onchange="try{setCustomValidity('')}catch(e){}"
         value="${not empty error ? param[name] : order[name]}"
         class="field"/>
         <c:if test="${not empty error}">

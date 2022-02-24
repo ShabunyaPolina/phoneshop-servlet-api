@@ -1,6 +1,6 @@
-package com.es.phoneshop.securiry.impl;
+package com.es.phoneshop.security.impl;
 
-import com.es.phoneshop.securiry.DosProtectionService;
+import com.es.phoneshop.security.DosProtectionService;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

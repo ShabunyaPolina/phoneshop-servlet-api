@@ -39,7 +39,7 @@ public class CartItem implements Serializable, Cloneable {
         try {
             return (CartItem) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+            throw new RuntimeException("Clone not supported");
         }
     }
 }

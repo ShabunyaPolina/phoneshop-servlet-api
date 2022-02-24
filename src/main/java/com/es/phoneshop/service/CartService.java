@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.cart_service;
+package com.es.phoneshop.service;
 
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;

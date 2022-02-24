@@ -1,6 +1,6 @@
 package com.es.phoneshop.dao.impl;
 
-import com.es.phoneshop.dao.GenericArrayListDao;
+import com.es.phoneshop.dao.generic.GenericArrayListDao;
 import com.es.phoneshop.dao.OrderDao;
 import com.es.phoneshop.exception.DaoItemNotFoundException;
 import com.es.phoneshop.exception.OrderNotFoundException;
@@ -21,7 +21,7 @@ public class ArrayListOrderDao extends GenericArrayListDao<Order> implements Ord
     }
 
     @Override
-    public Order get(Long id) throws OrderNotFoundException, IllegalArgumentException {
+    public Order get(Long id) {
         try {
             return super.get(id);
         } catch (DaoItemNotFoundException e) {
@@ -30,7 +30,7 @@ public class ArrayListOrderDao extends GenericArrayListDao<Order> implements Ord
     }
 
     @Override
-    public Order getBySecureId(String secureId) throws OrderNotFoundException {
+    public Order getBySecureId(String secureId) {
         getLocker().readLock().lock();
         try {
             if (secureId == null) {
@@ -46,7 +46,7 @@ public class ArrayListOrderDao extends GenericArrayListDao<Order> implements Ord
     }
 
     @Override
-    public void save(Order order) throws OrderNotFoundException {
+    public void save(Order order) {
         super.save(order);
     }
 }

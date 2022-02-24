@@ -15,11 +15,12 @@ import java.io.IOException;
 import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductListPageServletTest {
+public class CartPageServletTest {
     @Mock
     private HttpServletRequest request;
     @Mock
@@ -35,7 +36,7 @@ public class ProductListPageServletTest {
     @Mock
     private ServletContext servletContext;
 
-    private final ProductListPageServlet servlet = new ProductListPageServlet();
+    private final CartPageServlet servlet = new CartPageServlet();
 
     @Before
     public void setup() throws ServletException {
@@ -50,7 +51,6 @@ public class ProductListPageServletTest {
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute(anyString())).thenReturn(null);
 
-        when(request.getParameter(eq("id"))).thenReturn("1");
         when(request.getLocale()).thenReturn(Locale.getDefault());
     }
 
@@ -58,13 +58,12 @@ public class ProductListPageServletTest {
     public void testDoGet() throws ServletException, IOException {
         servlet.doGet(request, response);
 
-        verify(request).setAttribute(eq("recentlyViewed"), any());
-        verify(request).setAttribute(eq("products"), any());
+        verify(request).setAttribute(eq("cart"), any());
         verify(requestDispatcher).forward(request, response);
     }
 
     @Test
-    public void testDoPostCorrectData() throws IOException {
+    public void testDoPostCorrectData() throws IOException, ServletException {
         String[] strArr = {"1", "2", "3"};
         when(request.getParameterValues(eq("productId"))).thenReturn(strArr);
         when(request.getParameterValues(eq("quantity"))).thenReturn(strArr);
@@ -74,18 +73,19 @@ public class ProductListPageServletTest {
     }
 
     @Test
-    public void testDoPostIncorrectQuantity() throws IOException {
+    public void testDoPostIncorrectQuantity() throws IOException, ServletException {
         String[] ids = {"1"};
         when(request.getParameterValues(eq("productId"))).thenReturn(ids);
         String[] quantities = {"a"};
         when(request.getParameterValues(eq("quantity"))).thenReturn(quantities);
 
         servlet.doPost(request, response);
-        verify(response).sendRedirect(anyString());
+        verify(request).setAttribute(eq("errors"), any());
+        verify(request.getRequestDispatcher(anyString())).forward(request, response);
     }
 
     @Test
-    public void testDoPostZeroQuantity() throws IOException {
+    public void testDoPostZeroQuantity() throws IOException, ServletException {
         String[] ids = {"1"};
         when(request.getParameterValues(eq("productId"))).thenReturn(ids);
         String[] quantities = {"0"};
@@ -96,13 +96,14 @@ public class ProductListPageServletTest {
     }
 
     @Test
-    public void testDoPostOutOfStock() throws IOException {
+    public void testDoPostOutOfStock() throws IOException, ServletException {
         String[] ids = {"1"};
         when(request.getParameterValues(eq("productId"))).thenReturn(ids);
         String[] quantities = {"123"};
         when(request.getParameterValues(eq("quantity"))).thenReturn(quantities);
 
         servlet.doPost(request, response);
-        verify(response).sendRedirect(anyString());
+        verify(request).setAttribute(eq("errors"), any());
+        verify(request.getRequestDispatcher(anyString())).forward(request, response);
     }
 }

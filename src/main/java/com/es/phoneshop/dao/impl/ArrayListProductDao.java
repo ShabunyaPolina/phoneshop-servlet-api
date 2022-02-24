@@ -1,6 +1,6 @@
 package com.es.phoneshop.dao.impl;
 
-import com.es.phoneshop.dao.GenericArrayListDao;
+import com.es.phoneshop.dao.generic.GenericArrayListDao;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exception.DaoItemNotFoundException;
 import com.es.phoneshop.model.enums.SortField;
@@ -26,7 +26,7 @@ public class ArrayListProductDao extends GenericArrayListDao<Product> implements
     }
 
     @Override
-    public Product get(Long id) throws ProductNotFoundException, IllegalArgumentException {
+    public Product get(Long id) {
         try {
             return super.get(id);
         } catch (DaoItemNotFoundException e) {
@@ -94,16 +94,12 @@ public class ArrayListProductDao extends GenericArrayListDao<Product> implements
     }
 
     @Override
-    public void save(Product product) throws ProductNotFoundException {
+    public void save(Product product) {
         super.save(product);
     }
 
     @Override
-    public void delete(Long id) throws ProductNotFoundException{
-        try {
+    public void delete(Long id) {
             super.delete(id);
-        } catch (DaoItemNotFoundException e) {
-            throw new ProductNotFoundException(e.getMessage(), e.getId());
-        }
     }
 }

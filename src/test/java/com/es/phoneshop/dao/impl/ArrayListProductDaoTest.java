@@ -43,7 +43,7 @@ public class ArrayListProductDaoTest {
 
     // getProduct method tests
 
-    @Test(expected = ProductNotFoundException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetProductNullId() {
         productDao.get(null);
     }

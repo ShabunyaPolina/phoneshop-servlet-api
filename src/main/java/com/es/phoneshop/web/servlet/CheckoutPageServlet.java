@@ -3,10 +3,10 @@ package com.es.phoneshop.web.servlet;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.enums.PaymentMethod;
 import com.es.phoneshop.model.order.Order;
-import com.es.phoneshop.service.cart_service.CartService;
-import com.es.phoneshop.service.cart_service.impl.DefaultCartService;
-import com.es.phoneshop.service.order_service.OrderService;
-import com.es.phoneshop.service.order_service.impl.DefaultOrderService;
+import com.es.phoneshop.service.CartService;
+import com.es.phoneshop.service.impl.DefaultCartService;
+import com.es.phoneshop.service.OrderService;
+import com.es.phoneshop.service.impl.DefaultOrderService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -92,7 +92,7 @@ public class CheckoutPageServlet extends HttpServlet {
         if (value == null || value.isEmpty()) {
             errors.put("deliveryDate", "Value is required");
         } else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             try {
                 order.setDeliveryDate(LocalDate.parse(value, formatter));
             } catch (DateTimeParseException e) {

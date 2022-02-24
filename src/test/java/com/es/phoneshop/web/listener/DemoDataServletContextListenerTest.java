@@ -35,6 +35,6 @@ public class DemoDataServletContextListenerTest {
     public void testContextInitialized() {
         servletContextListener.contextInitialized(servletContextEvent);
 
-        assertEquals(12, productDao.findProducts(null, null, null).size());
+        assertEquals(13, productDao.findProducts(null, null, null).size());
     }
 }

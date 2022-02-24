@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.cart_service.impl;
+package com.es.phoneshop.service.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
@@ -6,7 +6,7 @@ import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.cart_service.CartService;
+import com.es.phoneshop.service.CartService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;

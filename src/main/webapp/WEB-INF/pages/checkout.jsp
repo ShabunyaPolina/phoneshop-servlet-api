@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -96,18 +96,37 @@
     <h3> Order information: </h3>
     <form method="post" action="${pageContext.servletContext.contextPath}/checkout">
         <table>
-            <tags:orderFormRow name="firstName" label="First name" order="${order}" errors="${errors}"/>
-            <tags:orderFormRow name="lastName" label="Last name" order="${order}" errors="${errors}"/>
-            <tags:orderFormRow name="phone" label="Phone" order="${order}" errors="${errors}"/>
-            <tags:orderFormRow name="deliveryDate" label="Delivery date" order="${order}" errors="${errors}"/>
-            <tags:orderFormRow name="deliveryAddress" label="Delivery address" order="${order}" errors="${errors}"/>
+            <tags:orderFormRow name="firstName" label="First name" order="${order}" errors="${errors}"
+            format="[a-zA-Z-]+" message="Please use latin alphabet."/>
+            <tags:orderFormRow name="lastName" label="Last name" order="${order}" errors="${errors}"
+            format="[a-zA-Z-]+" message="Please use latin alphabet."/>
+            <tags:orderFormRow name="phone" label="Phone" order="${order}" errors="${errors}"
+            format="[0-9+]+" message="Please check input data and try again."/>
+            <tr>
+                <td class="list">
+                    Delivery date <span style="color:red">*</span>:
+                </td>
+                <td class="list">
+                    <c:set var="error" value="${errors['deliveryDate']}"/>
+                    <input type="date" name="deliveryDate"
+                    value="${not empty error ? param['deliveryDate'] : order['deliveryDate']}"
+                    class="field"/>
+                    <c:if test="${not empty error}">
+                        <div class="error">
+                            ${error}
+                        </div>
+                    </c:if>
+                     ${param['deliveryDate']}
+                </td>
+            </tr>
+            <tags:orderFormRow name="deliveryAddress" label="Delivery address" order="${order}" errors="${errors}"
+            format="[a-zA-Z0-9-]+"  message="Please check input data and try again."/>
             <tr>
                 <td class="list">
                     Payment method<span style="color:red">*</span>:
                 </td>
                 <td class="list">
                     <select name="paymentMethod">
-                        <option></option>
                         <c:forEach var="paymentMethod" items="${paymentMethods}">
                         <option value="${paymentMethod}" ${param.paymentMethod eq paymentMethod ? 'selected' : '' }>
                         ${paymentMethod}</option>
