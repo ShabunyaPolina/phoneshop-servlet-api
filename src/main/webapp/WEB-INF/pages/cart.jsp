@@ -72,11 +72,19 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td>Total coast</td>
                 <td>
-                    <fmt:formatNumber value="${cart.totalCoast}" type="currency"
-                    currencySymbol="${cart.items[0].product.currency.symbol}"/>
+                    Total quantity:
+                    <div class="field">
+                        ${cart.totalQuantity}
+                    </div>
                 </td>
+                <td>
+                    Total coast:
+                        <div>
+                            <fmt:formatNumber value="${cart.totalCoast}" type="currency"
+                            currencySymbol="${cart.currency.symbol}"/>
+                        </div>
+                    </td>
             </tr>
         </table>
         <c:if test="${not empty cart.items}">
@@ -84,5 +92,8 @@
                 <button>Update</button>
             </p>
         </c:if>
+    </form>
+    <form action="${pageContext.servletContext.contextPath}/checkout">
+        <button>Checkout</button>
     </form>
 </tags:master>

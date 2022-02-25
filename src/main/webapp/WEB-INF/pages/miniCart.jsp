@@ -6,6 +6,6 @@
     <a href="${pageContext.servletContext.contextPath}/cart">
         Cart: ${cart.totalQuantity} items
         <fmt:formatNumber value="${cart.totalCoast}" type="currency"
-        currencySymbol="${cart.items[0].product.currency.symbol}"/>
+        currencySymbol="${cart.currency.symbol}"/>
     </a>
 </span>

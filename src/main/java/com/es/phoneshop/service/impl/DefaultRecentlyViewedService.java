@@ -1,8 +1,8 @@
-package com.es.phoneshop.service.recently_viewed_service.impl;
+package com.es.phoneshop.service.impl;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.recentlyviewed.RecentlyViewedProducts;
-import com.es.phoneshop.service.recently_viewed_service.RecentlyViewedService;
+import com.es.phoneshop.service.RecentlyViewedService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.locks.ReadWriteLock;

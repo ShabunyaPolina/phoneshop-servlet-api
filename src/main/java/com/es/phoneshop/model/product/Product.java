@@ -1,11 +1,12 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.dao.dao_item.DaoItem;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Product implements Serializable {
-    private Long id;
+public class Product extends DaoItem implements Serializable {
     private String code;
     private String description;
     /** null means there is no price because the product is outdated or new */
@@ -16,10 +17,8 @@ public class Product implements Serializable {
     private String imageUrl;
     private List<PriceUpdatePoint> priceHistory;
 
-    public Product() {
-    }
-
     public Product(String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
+        super(null);
         this.code = code;
         this.description = description;
         this.price = price;
@@ -34,7 +33,7 @@ public class Product implements Serializable {
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
-        this.id = id;
+        super(id);
         this.code = code;
         this.description = description;
         this.price = price;
@@ -46,14 +45,6 @@ public class Product implements Serializable {
         if(price != null) {
             priceHistory.add(new PriceUpdatePoint(Calendar.getInstance().getTime(), price));
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCode() {

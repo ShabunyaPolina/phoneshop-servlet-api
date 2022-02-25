@@ -1,18 +1,25 @@
 package com.es.phoneshop.model.cart;
 
+import com.es.phoneshop.dao.dao_item.DaoItem;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
-public class Cart implements Serializable {
-    private final List<CartItem> items;
+public class Cart extends DaoItem implements Serializable {
+    private List<CartItem> items;
 
     private int totalQuantity;
     private BigDecimal totalCoast;
 
+    private Currency currency;
+
     public Cart() {
+        super(null);
         this.items = new ArrayList<>();
+        currency = Currency.getInstance("USD");
     }
 
     public List<CartItem> getItems() {
@@ -33,6 +40,18 @@ public class Cart implements Serializable {
 
     public void setTotalCoast(BigDecimal totalCoast) {
         this.totalCoast = totalCoast;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     @Override

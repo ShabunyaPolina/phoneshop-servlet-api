@@ -3,7 +3,7 @@ package com.es.phoneshop.web.servlet;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.service.cart_service.CartService;
+import com.es.phoneshop.service.CartService;
 import com.es.phoneshop.model.product.Product;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -37,13 +38,10 @@ public class ProductDetailsPageServletTest {
     private Product product;
     @Mock
     private HttpSession session;
-    @Mock
-    private Cart cart;
-    @Mock
-    private CartService cartService;
 
     private final ProductDetailsPageServlet servlet = new ProductDetailsPageServlet();
     private final ProductDao productDao = ArrayListProductDao.getInstance();
+    private final Cart cart = new Cart();
 
     @Before
     public void setup() throws ServletException {
@@ -57,11 +55,11 @@ public class ProductDetailsPageServletTest {
         when(request.getPathInfo()).thenReturn("/1");
 
         when(request.getSession()).thenReturn(session);
-        when(session.getAttribute(anyString())).thenReturn(cart);
 
         when(request.getLocale()).thenReturn(Locale.getDefault());
 
         when(product.getStock()).thenReturn(100);
+        when(product.getPrice()).thenReturn(new BigDecimal(100));
     }
 
     @Test
@@ -75,8 +73,9 @@ public class ProductDetailsPageServletTest {
     }
 
     @Test
-    public void testDoPostCorrectQuantity() throws ServletException, IOException {
-        when(request.getParameter("quantity")).thenReturn("3");
+    public void testDoPostCorrectQuantity() throws IOException {
+        when(request.getParameter("quantity")).thenReturn("1");
+        when(session.getAttribute(anyString())).thenReturn(cart);
 
         servlet.doPost(request, response);
 
@@ -84,11 +83,20 @@ public class ProductDetailsPageServletTest {
     }
 
     @Test
-    public void testDoPostIncorrectQuantity() throws ServletException, IOException {
+    public void testDoPostIncorrectQuantity() throws IOException {
         when(request.getParameter("quantity")).thenReturn(anyString());
 
         servlet.doPost(request, response);
 
-        verify(request).setAttribute(eq("error"), anyString());
+        verify(response).sendRedirect(anyString());
+    }
+
+    @Test
+    public void testDoPostOutOfStock() throws IOException {
+        when(request.getParameter("quantity")).thenReturn("123");
+
+        servlet.doPost(request, response);
+
+        verify(response).sendRedirect(anyString());
     }
 }

@@ -5,11 +5,11 @@ import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.recentlyviewed.RecentlyViewedProducts;
-import com.es.phoneshop.service.cart_service.CartService;
-import com.es.phoneshop.service.cart_service.impl.DefaultCartService;
+import com.es.phoneshop.service.CartService;
+import com.es.phoneshop.service.impl.DefaultCartService;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.recently_viewed_service.RecentlyViewedService;
-import com.es.phoneshop.service.recently_viewed_service.impl.DefaultRecentlyViewedService;
+import com.es.phoneshop.service.RecentlyViewedService;
+import com.es.phoneshop.service.impl.DefaultRecentlyViewedService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -36,7 +36,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long productId = parseProductId(request);
-        Product product = productDao.getProduct(productId);
+        Product product = productDao.get(productId);
         Cart cart = cartService.getCart(request);
         RecentlyViewedProducts recentlyViewed = recentlyViewedService.getRecentlyViewed(request);
 
