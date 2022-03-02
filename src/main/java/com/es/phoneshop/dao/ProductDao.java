@@ -5,6 +5,7 @@ import com.es.phoneshop.model.enums.SortField;
 import com.es.phoneshop.model.enums.SortOrder;
 import com.es.phoneshop.model.product.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductDao {
@@ -12,4 +13,6 @@ public interface ProductDao {
     List<Product> findProducts(String query, SortField sortField, SortOrder sortOrder);
     void save(Product product) throws ProductNotFoundException;
     void delete(Long id) throws ProductNotFoundException;
+    List<Product> findProductsForAdvancedSearch(String productCode, BigDecimal minPrice,
+                                                BigDecimal maxPrice, int minStock);
 }

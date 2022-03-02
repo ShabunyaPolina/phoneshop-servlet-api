@@ -121,4 +121,14 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <servlet>
+    <servlet-name>advancedSearch</servlet-name>
+    <servlet-class>com.es.phoneshop.web.servlet.SearchPageServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>advancedSearch</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+
 </web-app>

@@ -49,7 +49,7 @@ public class CheckoutPageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = cartService.getCart(request);
-        Order order = (Order) request.getSession().getAttribute("order");
+        Order order = orderService.getOrder(cart);
 
         Map<String, String> errors = new HashMap<>();
 

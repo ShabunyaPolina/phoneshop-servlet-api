@@ -8,6 +8,7 @@ import com.es.phoneshop.model.enums.SortOrder;
 import com.es.phoneshop.exception.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -100,6 +101,27 @@ public class ArrayListProductDao extends GenericArrayListDao<Product> implements
 
     @Override
     public void delete(Long id) {
-            super.delete(id);
+        super.delete(id);
+    }
+
+    @Override
+    public List<Product> findProductsForAdvancedSearch(String productCode, BigDecimal minPrice, BigDecimal maxPrice, int minStock) {
+        getLocker().readLock().lock();
+        try {
+            List<Product> result = getItems();
+            if (productCode != null && !productCode.isEmpty()) {
+                result = getItems().stream()
+                        .filter(product -> product.getCode().contains(productCode))
+                        .collect(Collectors.toList());
+            }
+            return result.stream()
+                    .filter(this::productHasNonNullPrice)
+                    .filter(product -> product.getPrice().compareTo(minPrice) >= 0)
+                    .filter(product -> product.getPrice().compareTo(maxPrice) <= 0)
+                    .filter(product -> product.getStock() >= minStock)
+                    .collect(Collectors.toList());
+        } finally {
+            getLocker().readLock().unlock();
+        }
     }
 }

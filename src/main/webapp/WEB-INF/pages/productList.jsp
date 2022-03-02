@@ -20,6 +20,12 @@
             There was an error adding to cart
          </p>
      </c:if>
+     <form>
+     <button formaction="${pageContext.servletContext.contextPath}/search">
+        Advanced search
+    </button>
+    </form>
+    <p></p>
     <table>
         <thead>
             <tr>
